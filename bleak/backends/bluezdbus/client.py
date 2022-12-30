@@ -340,7 +340,7 @@ class BleakClientBlueZDBus(BaseBleakClient):
         if self._disconnecting_event:
             # another call to disconnect() is already in progress
             logger.debug(f"already in progress ({self._device_path})")
-            async with async_timeout(10):
+            async with async_timeout(30):
                 await self._disconnecting_event.wait()
         elif self.is_connected:
             self._disconnecting_event = asyncio.Event()
@@ -355,7 +355,7 @@ class BleakClientBlueZDBus(BaseBleakClient):
                     )
                 )
                 assert_reply(reply)
-                async with async_timeout(10):
+                async with async_timeout(30):
                     await self._disconnecting_event.wait()
             finally:
                 self._disconnecting_event = None
